@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { IProduct } from '../../../models/product';
+import { HttpClient } from '@angular/common/http';
+import { ICategory } from 'src/app/models/category';
+import { IBrand } from 'src/app/models/brand';
+import { CategoryService } from 'src/app/services/category.service';
+import { BrandService } from 'src/app/services/brand.service';
 
 @Component({
   selector: 'app-product-list',
@@ -8,12 +13,57 @@ import { IProduct } from '../../../models/product';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
+  productName: string = "";
+  categoryId: string = "";
+  brandId: string = "";
   products: IProduct[] = [];
+  categories: ICategory[] = [];
+  brands: IBrand[] = [];
 
-  constructor(private productService: ProductService) { }
+  constructor(
+    private productService: ProductService,
+    private categoryService: CategoryService,
+    private brandService: BrandService) { }
 
   ngOnInit(): void {
     this.getProducts();
+    this.loadCategories();
+    this.loadBrands();
+  }
+
+
+  loadCategories(): void {
+    this.categoryService.getCategories().subscribe(
+      (categories) => {
+        this.categories = categories;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  loadBrands(): void {
+    this.brandService.getBrands().subscribe(
+      (brands) => {
+        this.brands = brands;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  searchProducts(): void {
+    this.productService.searchProducts(this.productName, this.brandId, this.categoryId)
+      .subscribe(
+        (response) => {
+          this.products = response;
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
   }
 
   getProducts(): void {
