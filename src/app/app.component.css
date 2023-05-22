@@ -1,0 +1,37 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .top-menu {
+    padding: 1rem;
+  }
+  
+  .side-menu {
+    width: 250px;
+    background-color: #f0f0f0;
+    transition: transform 0.3s;
+    transform: translateX(-100%);
+  }
+  
+  .side-menu.open {
+    transform: translateX(0);
+  }
+  
+  .side-menu ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  .side-menu .nav-link {
+    padding: 0.5rem 1rem;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .side-menu .nav-link:hover {
+    background-color: #eaeaea;
+  }
+  
